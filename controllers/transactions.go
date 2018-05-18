@@ -23,7 +23,9 @@ func Put(resp http.ResponseWriter, req *http.Request) {
 
 	kvstore.Put(key, value)
 
-	resp.Write([]byte(fmt.Sprintf("Key %s saved with value %s", key, value)))
+	c := map[string]interface{}{"success" : true, "key" : key, "value": value, "msg": fmt.Sprintf("Key %s saved with value %s", key, value)}
+	rr, _ := json.Marshal(c)
+	resp.Write([]byte(rr))
 }
 
 func Get(resp http.ResponseWriter, req *http.Request) {
@@ -37,8 +39,9 @@ func Get(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	//fmt.Println(value)
-	resp.Write([]byte(value.(string)))
+	c := map[string]interface{}{"success" : true, "key" : key, "value": value}
+	rr, _ := json.Marshal(c)
+	resp.Write([]byte(rr))
 }
 
 func Delete(resp http.ResponseWriter, req *http.Request) {
@@ -53,15 +56,16 @@ func Delete(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	//fmt.Println(value)
-	resp.Write([]byte(fmt.Sprintf("Key %s deleted", key)))
+	c := map[string]interface{}{"success" : true, "key" : key, "msg": fmt.Sprintf("Key %s deleted", key)}
+	rr, _ := json.Marshal(c)
+	resp.Write([]byte(rr))
 }
 
 func responseError(HttpError int, s string, resp http.ResponseWriter) {
 	log.Println(s)
 	resp.WriteHeader(HttpError)
 	resp.Header().Set("Content-Type", "application/json")
-	c := map[string]interface{}{"error" : s}
+	c := map[string]interface{}{"success" : false, "msg" : s}
 	rr, _ := json.Marshal(c)
 	resp.Write(rr)
 }
