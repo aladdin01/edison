@@ -1,0 +1,13 @@
+{
+  "database": {
+    "host": "127.0.0.1",
+    "protocol": "tcp",
+    "port": "3306",
+    "username": "root",
+    "password": "root",
+    "dbname": "edison"
+  },
+  "log": {
+    "path": "/home/alex/go/src/edison"
+  }
+}
